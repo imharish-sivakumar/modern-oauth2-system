@@ -1,0 +1,25 @@
+serve:
+  cookies:
+    same_site_mode: Lax
+
+urls:
+  self:
+    issuer: https://cisauth.org
+    public: https://cisauth.org
+
+  login: https://cisauth.org/user-service/v1/login/accept
+  consent: https://cisauth.org/user-service/v1/login/consent
+  logout: https://cisauth.org/user-service/v1/users/logout
+  post_logout_redirect: https://cisauth.org/login
+
+secrets:
+  system:
+    - youReallyNeedToChangeThis
+
+oidc:
+  subject_identifiers:
+    supported_types:
+      - pairwise
+      - public
+    pairwise:
+      salt: youReallyNeedToChangeThis

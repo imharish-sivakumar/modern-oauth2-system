@@ -1,0 +1,129 @@
+syntax = "proto3";
+
+option go_package = "./;pb";
+
+enum Role {
+  ADMIN = 0;
+  SELLER = 1;
+  BUYER = 2;
+}
+
+message UserProfile {
+  string ID = 1;
+  string Name = 2;
+  string Email = 3;
+  bytes TokenPayload = 5;
+}
+
+message AcceptLoginRequest {
+  string LoginChallenge = 1;
+  UserProfile UserProfile = 2;
+}
+
+message AcceptLoginResponse {
+  string RedirectTo = 1;
+}
+
+message AcceptConsentRequest {
+  string ConsentChallenge = 1;
+}
+
+message AcceptConsentResponse {
+  string RedirectTo = 1;
+}
+
+message TokenExchangeRequest {
+  string Code = 1;
+  string RedirectURI = 2;
+  string ClientID = 3;
+  string CodeVerifier = 4;
+}
+
+message TokenExchangeResponse {
+  string AccessToken = 1;
+  string IDToken = 2;
+  string RefreshToken = 3;
+  int64 ExpiresIn = 4;
+  string ExpiresAt = 5;
+  string SessionID = 6;
+}
+
+message IntrospectRequest {
+  string AccessToken = 1;
+  string SessionID = 2;
+}
+
+message IDToken {
+  UserProfile UserProfile = 1;
+  string Subject = 2;
+  string AccessTokenHash = 3;
+}
+
+message IntrospectResponse {
+  string NewAccessToken = 1;
+  bool IsAccessTokenRefreshed = 2;
+  int64 NewAccessTokenExpiry = 3;
+  IDToken IDToken = 4;
+  bool Active = 5;
+  repeated string Audience = 6;
+  string ClientID = 7;
+  int64 Expiry = 8;
+  int64 IssuedAt = 9;
+  string Issuer = 10;
+  int64 NotBefore = 11;
+  string ObfuscatedSubject = 12;
+  string Scope = 13;
+  string Subject = 14;
+  string TokenType = 15;
+  string TokenUse = 16;
+  string Username = 17;
+}
+
+message IntrospectVerificationResponse{
+  bool Active = 1;
+  string Email = 2;
+  string ClientID = 3;
+}
+
+message IntrospectVerificationRequest {
+  string AccessToken = 1;
+}
+
+message GenerateVerificationTokenRequest {
+  string Email = 1;
+  string ClientID = 2;
+}
+
+message GenerateRefreshTokenRequest {
+  string accessToken = 1;
+  string sessionID = 2;
+}
+
+message ClientTokenResponse {
+  string AccessToken = 1;
+  int64 ExpiresIn = 2;
+  string ExpiresAt = 3;
+  string TokenType = 4;
+  string Scope = 5;
+  string Email = 6;
+}
+
+message RevokeAccessTokenRequest {
+  string clientID = 1;
+  string accessToken = 2;
+  string sessionID = 3;
+}
+
+message EmptyGrpcMessage {
+}
+
+service TokenService {
+  rpc AcceptLogin(AcceptLoginRequest) returns (AcceptLoginResponse){}
+  rpc AcceptConsent(AcceptConsentRequest) returns(AcceptConsentResponse) {}
+  rpc ExchangeToken(TokenExchangeRequest) returns (TokenExchangeResponse) {}
+  rpc Introspect(IntrospectRequest) returns(IntrospectResponse) {}
+  rpc GenerateVerificationToken(GenerateVerificationTokenRequest) returns (ClientTokenResponse) {}
+  rpc IntrospectVerificationToken(IntrospectVerificationRequest) returns (IntrospectVerificationResponse) {}
+  rpc GenerateRefreshToken(GenerateRefreshTokenRequest) returns (TokenExchangeResponse) {}
+  rpc RevokeAccessToken(RevokeAccessTokenRequest) returns(EmptyGrpcMessage){}
+}

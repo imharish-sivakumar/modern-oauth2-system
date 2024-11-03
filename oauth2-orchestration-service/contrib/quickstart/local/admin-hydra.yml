@@ -1,0 +1,41 @@
+serve:
+  cookies:
+    same_site_mode: Lax
+  public:
+    cors:
+      enabled: true
+      allowed_origins:
+        - http://localhost:3001
+        - http://localhost:8016
+      allowed_methods:
+        - POST
+        - GET
+        - PUT
+        - PATCH
+        - DELETE
+      allowed_headers:
+        - Authorization
+      exposed_headers:
+        - Content-Type
+
+urls:
+  self:
+    issuer: http://localhost:4446
+  consent: http://localhost:3001/admin-service/v1/login/consent
+  login: http://localhost:3001/admin-service/v1/login/accept
+  logout: http://localhost:3001/auth/logout
+
+secrets:
+  system:
+    - youReallyNeedToChangeThis
+
+oidc:
+  subject_identifiers:
+    supported_types:
+      - pairwise
+      - public
+    pairwise:
+      salt: youReallyNeedToChangeThis
+
+strategies:
+  access_token: jwt

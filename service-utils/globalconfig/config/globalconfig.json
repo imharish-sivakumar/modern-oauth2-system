@@ -1,0 +1,10 @@
+{
+  "tokenManagementServiceHost": {
+    "tag": "tokenManagementServiceHost",
+    "value": "localhost:5052"
+  },
+  "userManagementServiceHost": {
+    "tag": "userManagementServiceHost",
+    "value": "localhost:5012"
+  }
+}

@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+option go_package = "./;pb";
+
+
+message EmailRequest {
+  string userID = 1;
+}
+
+message Email {
+  string Id = 1;
+}
+
+service UserManagement {
+  rpc GetEmail(EmailRequest) returns (Email) {}
+}
