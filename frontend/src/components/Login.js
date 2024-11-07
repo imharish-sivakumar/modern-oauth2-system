@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import './Login.css';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -24,28 +26,36 @@ const Login = () => {
     <div className="auth-container">
       <div className="auth-form-container">
         <form onSubmit={handleSubmit} className="auth-form">
-          <h2 className="auth-title">Welcome back 👋</h2>
+          <h2 className="auth-title">
+            Welcome Back! <span role="img" aria-label="waving hand">👋</span>
+          </h2>
           <div className="form-group">
             <label>Email</label>
-            <input
-              type="email"
-              className="form-control"
-              placeholder="Enter your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
+            <div className="input-with-icon">
+              <FontAwesomeIcon icon={faEnvelope} />
+              <input
+                type="email"
+                className="form-control"
+                placeholder="Enter your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="form-group">
             <label>Password</label>
-            <input
-              type="password"
-              className="form-control"
-              placeholder="Enter your password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              required
-            />
+            <div className="input-with-icon">
+              <FontAwesomeIcon icon={faLock} />
+              <input
+                type="password"
+                className="form-control"
+                placeholder="Enter your password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+              />
+            </div>
           </div>
           <div className="options-container">
             <div>
@@ -85,14 +95,17 @@ const Login = () => {
           <form>
             <div className="form-group">
               <label>Email</label>
-              <input
-                type="email"
-                className="form-control"
-                placeholder="Enter your email"
-                value={forgotEmail}
-                onChange={(e) => setForgotEmail(e.target.value)}
-                required
-              />
+              <div className="input-with-icon">
+                <FontAwesomeIcon icon={faEnvelope} />
+                <input
+                  type="email"
+                  className="form-control"
+                  placeholder="Enter your email"
+                  value={forgotEmail}
+                  onChange={(e) => setForgotEmail(e.target.value)}
+                  required
+                />
+              </div>
             </div>
           </form>
         </Modal.Body>
