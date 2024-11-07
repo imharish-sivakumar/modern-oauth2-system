@@ -1,0 +1,98 @@
+/* Container for the entire auth page (Login page) */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f7f8fa; /* Light gray background */
+  }
+  
+  /* Container for the login form box */
+  .auth-form-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 100%;
+  }
+  
+  /* Title of the form */
+  .auth-title {
+    text-align: center;
+    margin-bottom: 24px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  /* Form group (input fields) */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for input fields (email and password) */
+  .form-control {
+    padding: 10px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+  }
+  
+  /* Options container (Checkbox and Forgot Password link) */
+  .options-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for the 'Keep me logged in' checkbox label */
+  .options-container label {
+    font-size: 14px;
+  }
+  
+  /* Forgot Password link style */
+  .forgot-password-link {
+    color: #007bff; /* Bootstrap primary blue */
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  
+  .forgot-password-link:hover {
+    text-decoration: underline; 
+  }
+  
+  /* Sign In button styling */
+  .btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #5c667b; 
+    color: #ffffff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  
+  .btn:hover {
+    background-color: #4a5269; 
+  }
+  
+  /* Styling for the 'Not a member yet?' and 'Register now' link */
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+  }
+  
+  .register-link a {
+    color: #007bff; 
+    text-decoration: none;
+  }
+  
+  .register-link a:hover {
+    text-decoration: underline; 
+  }
+  
