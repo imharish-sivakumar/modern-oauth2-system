@@ -1,4 +1,3 @@
-version: "3.7"
 services:
   cisauth-db:
     image: postgres:latest
@@ -26,6 +25,50 @@ services:
     restart: on-failure
     environment:
       - DSN=postgres://hydra:secret@cisauth-db:5432/hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      - cisauth-db
+    networks:
+      - cisauth-network
+
+  admin-hydra-migrate:
+    container_name: admin-hydra-migrate
+    image: oryd/hydra:v2.0.3
+    command:
+      migrate -c /etc/config/hydra/admin-hydra.yml sql -e --yes
+    volumes:
+      - type: bind
+        source: ./contrib/quickstart/${ENVIRONMENT}
+        target: /etc/config/hydra
+    restart: on-failure
+    environment:
+      - DSN=postgres://admin-hydra:secret@cisauth-db:5432/admin-hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+    depends_on:
+      - cisauth-db
+    networks:
+      - cisauth-network
+
+  admin-hydra:
+    container_name: admin-hydra
+    image: oryd/hydra:v2.0.3
+    ports:
+      - "4446:4444" # Public port
+      - "4447:4445" # Admin port
+      - "5556:5555" # Port for hydra token user
+    volumes:
+      - type: bind
+        source: ./contrib/quickstart/${ENVIRONMENT}
+        target: /etc/config/hydra
+    command:
+      serve -c /etc/config/hydra/admin-hydra.yml all --dev
+    restart: unless-stopped
+    environment:
+      - TTL_ACCESS_TOKEN=720h
+      - TTL_ID_TOKEN=720h
+      - DSN=postgres://admin-hydra:secret@cisauth-db:5432/admin-hydra?sslmode=disable&max_conns=20&max_idle_conns=4
+      - SERVE_PUBLIC_CORS_ENABLED=true
+      - SERVE_PUBLIC_CORS_ALLOWED_METHODS=POST,GET,PUT,DELETE
+      - SERVE_ADMIN_CORS_ENABLED=true
+      - SERVE_ADMIN_CORS_ALLOWED_METHODS=POST,GET,PUT,DELETE
     depends_on:
       - cisauth-db
     networks:
@@ -61,6 +104,16 @@ services:
   consent:
     environment:
       - HYDRA_ADMIN_URL=http://hydra:4445
+    image: oryd/hydra-login-consent-node:latest
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    networks:
+      - cisauth-network
+
+  admin-consent:
+    environment:
+      - HYDRA_ADMIN_URL=http://admin-hydra:4447
     image: oryd/hydra-login-consent-node:latest
     ports:
       - "3000:3000"

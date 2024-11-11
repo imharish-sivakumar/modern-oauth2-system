@@ -1,0 +1,5 @@
+.idea/
+docker-compose-local.env
+oauth2-scrapper/node_modules
+.env
+node_modules/

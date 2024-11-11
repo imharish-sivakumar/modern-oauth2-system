@@ -2,17 +2,11 @@ syntax = "proto3";
 
 option go_package = "./;pb";
 
-enum Role {
-  ADMIN = 0;
-  SELLER = 1;
-  BUYER = 2;
-}
 
 message UserProfile {
   string ID = 1;
   string Name = 2;
   string Email = 3;
-  bytes TokenPayload = 5;
 }
 
 message AcceptLoginRequest {

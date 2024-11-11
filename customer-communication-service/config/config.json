@@ -1,0 +1,6 @@
+{
+  "name": "user-management-service",
+  "environment": "local",
+  "secretKey": "local/cisauth",
+  "fromEmail": "support@cisauth.org"
+}
