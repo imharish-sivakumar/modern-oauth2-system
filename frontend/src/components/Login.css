@@ -1,0 +1,163 @@
+/* Container for the entire auth page (Login page) */
+.auth-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5; /* Light grey background for a modern look */
+  }
+  
+  /* Container for the login form box */
+  .auth-form-container {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 450px;
+    max-width: 100%;
+  }
+  
+  /* Title of the form */
+  .auth-title {
+    text-align: center;
+    margin-bottom: 32px;
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+  }
+  
+  /* Form group (input fields) */
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  /* Styling for input fields (email and password) */
+  .form-control {
+    padding: 12px;
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-control:focus {
+    border-color: #3182ce;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.2);
+  }
+  
+  /* Container for inputs with icons */
+  .input-with-icon {
+    position: relative;
+  }
+  
+  .input-with-icon input {
+    padding-left: 36px;
+  }
+  
+  .input-with-icon svg {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+  }
+  
+  /* Options container (Checkbox and Forgot Password link) */
+  .options-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  /* Styling for the 'Keep me logged in' checkbox label */
+  .options-container label {
+    font-size: 14px;
+    color: #666;
+  }
+  
+  /* Forgot Password link style */
+  .forgot-password-link {
+    color: #007aff;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .forgot-password-link:hover {
+    color: #005bb5; 
+    text-decoration: underline; 
+  }
+  
+  /* Sign In button styling */
+  .btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #007aff; 
+    color: #ffffff;
+    border: none;
+    border-radius: 20px; 
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .btn:hover {
+    background-color: #005bb5; /* Slightly darker blue for hover */
+    transform: scale(1.02); /* Subtle pop-out effect */
+  }
+  
+  /* Styling for the 'Not a member yet?' and 'Register now' link */
+  .register-link {
+    text-align: center;
+    margin-top: 24px;
+    font-size: 14px;
+  }
+  
+  .register-link a {
+    color: #007aff; 
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+  }
+  
+  .register-link a:hover {
+    color: #005bb5; /* Slightly darker blue for hover effect */
+    text-decoration: underline; /* Add underline on hover */
+  }
+  
+  /* Modal Styling for Forgot Password */
+  .modal-content {
+    border-radius: 12px;
+  }
+  
+  .modal-header, .modal-footer {
+    border: none;
+  }
+  
+  .modal-title {
+    font-weight: 700;
+    color: #333;
+  }
+  
+  /* Modal Button Styling */
+  .modal-footer .btn {
+    padding: 10px 20px;
+    font-weight: 600;
+    border-radius: 20px;
+  }
+  
+  .modal-footer .btn-primary {
+    background-color: #007aff; 
+    border: none;
+  }
+  
+  .modal-footer .btn-primary:hover {
+    background-color: #005bb5; 
+  }
+  
