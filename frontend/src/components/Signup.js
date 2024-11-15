@@ -9,11 +9,14 @@ const Signup = () => {
   const [password, setPassword] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
+  const [showVerificationModal, setShowVerificationModal] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Handle signup logic
-    console.log({ email, password });
+    // Mock API call for signup and email verification
+    setTimeout(() => {
+      setShowVerificationModal(true); // Show verification modal when signup is successful
+    }, 1000);
   };
 
   const handleForgotPasswordSubmit = () => {
@@ -26,9 +29,7 @@ const Signup = () => {
     <div className="auth-container">
       <div className="auth-form-container">
         <form onSubmit={handleSubmit} className="auth-form">
-        <h2 className="auth-title">
-            Become a Member Today!
-        </h2>
+          <h2 className="auth-title">Become a Member Today!</h2>
           <div className="form-group">
             <label>Email</label>
             <div className="input-with-icon">
@@ -79,6 +80,25 @@ const Signup = () => {
           </div>
         </form>
       </div>
+
+      {/* Verification Modal */}
+      <Modal
+        show={showVerificationModal}
+        onHide={() => setShowVerificationModal(false)}
+        centered
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Check Your Email</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <p>Account created successfully! Please check your email to verify your account.</p>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="primary" onClick={() => setShowVerificationModal(false)}>
+            Close
+          </Button>
+        </Modal.Footer>
+      </Modal>
 
       {/* Forgot Password Modal */}
       <Modal
