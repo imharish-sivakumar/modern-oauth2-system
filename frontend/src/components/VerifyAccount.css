@@ -1,0 +1,70 @@
+/* Container for the entire verification page */
+.verification-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f0f2f5;
+  }
+  
+  /* Box to hold the verification message */
+  .verification-box {
+    background: #ffffff;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    width: 400px;
+    max-width: 100%;
+    text-align: center;
+  }
+  
+  /* Loading message styling */
+  .loading-message {
+    font-size: 16px;
+    font-weight: 500;
+    color: #666;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .loading-spinner {
+    margin-top: 10px;
+    width: 30px;
+    height: 30px;
+    border: 4px solid #ccc;
+    border-top: 4px solid #007aff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Verification message styling */
+  .verification-message {
+    font-size: 16px;
+    font-weight: 600;
+    padding: 15px;
+    border-radius: 8px;
+    margin-top: 20px;
+  }
+  
+  .verification-message.success {
+    background-color: #e6f7ff; 
+    color: #007aff;
+    border: 1px solid #b3e5fc;
+  }
+  
+  .verification-message.error {
+    background-color: #ffe6e6; 
+    color: #ff4d4f;
+    border: 1px solid #ffb3b3;
+  }
+  
