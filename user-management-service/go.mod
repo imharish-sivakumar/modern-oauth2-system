@@ -11,6 +11,8 @@ require (
 	github.com/gin-gonic/gin v1.10.0
 	github.com/go-playground/validator/v10 v10.22.0
 	github.com/google/uuid v1.6.0
+	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto v0.0.0-20241116230852-d7f5a42338ef
+	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0-20241116230347-3dd2a37643c3
 	github.com/lib/pq v1.10.9
 	github.com/redis/go-redis/v9 v9.7.0
 	golang.org/x/crypto v0.26.0
@@ -43,8 +45,6 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
-	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto v0.0.0-20241116230347-3dd2a37643c3 // indirect
-	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0-20241116230347-3dd2a37643c3 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.7 // indirect
 	github.com/kr/text v0.2.0 // indirect

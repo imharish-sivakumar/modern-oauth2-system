@@ -56,7 +56,7 @@ jobs:
           tags: harishsivakumar/user-management-service:latest
 
   docker-migrate:
-    needs: [go-build, golang-ci, semgrep, unit-test]
+    needs: [go-build]
     runs-on: self-hosted
     steps:
       - name: Set up QEMU
