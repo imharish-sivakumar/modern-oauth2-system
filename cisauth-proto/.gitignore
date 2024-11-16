@@ -136,4 +136,3 @@ dist
 vendor/
 
 buf.gen.yaml
-pb/
