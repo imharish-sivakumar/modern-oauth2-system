@@ -1,4 +1,4 @@
-module github.com/imharish-sivakumar/modern-oauth2-system/proto
+module github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto
 
 go 1.21
 

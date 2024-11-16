@@ -1,0 +1,19 @@
+services:
+  build-env:
+    image: golang:1.21-alpine3.19
+    environment:
+      - GO111MODULE=on
+      - GOSUMDB=off
+      - GOPRIVATE=github.com/imharish-sivakumar
+    platform: linux/amd64
+    volumes:
+      - type: volume
+        source: user_management_service_dep
+        target: /go
+      - type: bind
+        source: ../
+        target: /user-management-service
+    working_dir: /user-management-service
+
+volumes:
+  user_management_service_dep:

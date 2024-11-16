@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"context"
+	"database/sql"
 	"encoding/base64"
 	"encoding/json"
 	"errors"
@@ -10,9 +12,11 @@ import (
 	"strconv"
 	"time"
 
+	"user-management-service/apperror"
 	"user-management-service/config"
 	umsConstants "user-management-service/constants"
-	"user-management-service/models"
+	"user-management-service/domain"
+	"user-management-service/model"
 
 	"github.com/adjust/rmq/v5"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -28,16 +32,18 @@ import (
 
 type Handler struct {
 	kmsClient     *kms.Client
-	tmsClient     *pb.TokenServiceClient
+	tmsClient     pb.TokenServiceClient
 	serviceConfig *config.ServiceConfig
 	redisClient   *redis.Client
 	emailQueue    rmq.Queue
+	userService   domain.Service
 }
 
 func NewHandler(kmsClient *kms.Client,
-	tmsClient *pb.TokenServiceClient,
+	tmsClient pb.TokenServiceClient,
 	serviceConfig *config.ServiceConfig,
 	redisClient *redis.Client,
+	userService domain.Service,
 	emailQueue rmq.Queue) *Handler {
 	return &Handler{
 		kmsClient:     kmsClient,
@@ -45,11 +51,12 @@ func NewHandler(kmsClient *kms.Client,
 		serviceConfig: serviceConfig,
 		redisClient:   redisClient,
 		emailQueue:    emailQueue,
+		userService:   userService,
 	}
 }
 
 func (h *Handler) Register(c *gin.Context) {
-	var user models.User
+	var user model.User
 	if err := c.ShouldBindJSON(&user); err != nil {
 		c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
 			"message": err.Error(),
@@ -58,6 +65,14 @@ func (h *Handler) Register(c *gin.Context) {
 	}
 
 	ctx := c.Request.Context()
+
+	_, err := h.userService.GetUserByEmail(ctx, user.Email)
+	if err == nil || !errors.Is(err, sql.ErrNoRows) {
+		c.AbortWithStatusJSON(http.StatusUnprocessableEntity, gin.H{
+			"status": "please try again",
+		})
+		return
+	}
 
 	decoded := [][]byte{}
 	decryptables := []string{user.Password, user.ConfirmPassword}
@@ -161,9 +176,9 @@ incrementAndSend:
 		return
 	}
 
-	event := models.Event{
+	event := model.Event{
 		Email: user.Email,
-		Type:  models.VerificationEvent,
+		Type:  model.VerificationEvent,
 		EventPayload: []byte(fmt.Sprintf(`{
 	"verificationID": "%s"
 }`, userID)),
@@ -185,5 +200,54 @@ incrementAndSend:
 
 	c.JSON(http.StatusOK, gin.H{
 		"status": "success",
+	})
+}
+
+func (handler *Handler) VerifyEmail(c *gin.Context) {
+	var verificationRequest model.VerifyEmail
+	if err := c.ShouldBindQuery(&verificationRequest); err != nil {
+		validationError := apperror.CustomValidationError(err)
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": validationError,
+		})
+		return
+	}
+
+	ctx := c.Request.Context()
+	userDetails, err := handler.redisClient.Get(ctx, verificationRequest.Code).Result()
+	if err != nil {
+		if errors.Is(err, redis.Nil) {
+			c.AbortWithStatusJSON(http.StatusBadRequest, gin.H{
+				"error": "not found",
+			})
+			return
+		}
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	var user model.User
+	if err := json.Unmarshal([]byte(userDetails), &user); err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	err = handler.userService.CreateUser(ctx, user)
+	if err != nil {
+		c.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	defer func() {
+		handler.redisClient.Del(context.Background(), fmt.Sprintf("%s:%s", user.Email, umsConstants.RegistrationEmailCount), verificationRequest.Code)
+	}()
+
+	c.JSON(http.StatusCreated, gin.H{
+		"status": "created",
 	})
 }

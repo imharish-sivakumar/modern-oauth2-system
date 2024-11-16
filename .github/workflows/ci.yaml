@@ -1,0 +1,81 @@
+name: modern-oauth2-system
+on: [ push ]
+permissions:
+  contents: read
+jobs:
+  go-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+      - name: Change directory to user-service
+        run: cd user-management-service
+      - name: build
+        env:
+          CI_COMMIT_SHA: ${{ github.sha }}
+          CI_COMMIT_TAG: ${{ github.ref }}
+          EXEC_NAME: user-management-service
+          GITHUB_USERNAME: ${{ secrets.SCM_USERNAME }}
+          GITHUB_ACCESS_TOKEN: ${{ secrets.SCM_TOKEN }}
+        run: make build
+      - name: Step 3 - Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v4
+        with:
+          name: executable
+          path: bin
+
+  docker:
+    needs: [go-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
+      - name: Download a single artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: executable
+      - name: move executable to bin folder
+        run: mkdir bin && mv user-management-service ./bin/user-management-service
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: infrastructure/Dockerfile
+          push: true
+          tags: harishsivakumar/user-management-service:latest
+
+  docker-migrate:
+    needs: [go-build, golang-ci, semgrep, unit-test]
+    runs-on: self-hosted
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: infrastructure/Migrate.Dockerfile
+          push: true
+          tags: harishsivakumar/ums-migrate:latest

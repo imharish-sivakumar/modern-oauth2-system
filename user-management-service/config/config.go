@@ -18,14 +18,15 @@ type Secrets struct {
 }
 
 type ServiceConfig struct {
-	Name                      string
-	Environment               string
-	Port                      int
-	LoginPasswordKeyID        string
-	MaxVerificationRetryCount int
-	VerificationLinkExpiry    time.Duration
-	SecretKey                 string
-	TMSHost                   string
+	Name                       string
+	Environment                string
+	Port                       int
+	LoginPasswordKeyID         string
+	MaxVerificationRetryCount  int
+	VerificationLinkExpiry     time.Duration
+	SecretKey                  string
+	RefreshTokenExpiry         int
+	TokenManagementServiceHost string
 }
 
 func Load() (*ServiceConfig, error) {

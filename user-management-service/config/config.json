@@ -6,5 +6,6 @@
   "maxVerificationRetryCount": 5,
   "verificationLinkExpiry":  60000,
   "secretKey": "local/cisauth",
-  "tmsHost": "localhost:8123"
+  "refreshTokenExpiry": 720,
+  "tokenManagementServiceHost": "localhost:5052"
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"database/sql"
 	"encoding/json"
 	"fmt"
 	"log"
@@ -9,6 +10,7 @@ import (
 	"time"
 
 	appConfig "user-management-service/config"
+	"user-management-service/domain"
 	"user-management-service/handlers"
 
 	"github.com/adjust/rmq/v5"
@@ -20,6 +22,7 @@ import (
 	"github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto/pb"
 	"github.com/redis/go-redis/v9"
 	"google.golang.org/grpc"
+	"google.golang.org/grpc/credentials/insecure"
 )
 
 func main() {
@@ -80,18 +83,38 @@ func main() {
 
 	emailQueue, err := connection.OpenQueue("email")
 
-	conn, err := grpc.NewClient(serviceConfig.TMSHost)
-	//if err != nil {
-	//	log.Println("unable to create grpc client", err)
-	//	return
-	//}
+	conn, err := grpc.NewClient(serviceConfig.TokenManagementServiceHost, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	if err != nil {
+		log.Println("unable to create grpc client", err)
+		return
+	}
+
+	db, err := sql.Open("postgres", fmt.Sprintf("host=%s port=%s user=%s password=%s dbname='%s' sslmode=disable", data.PostgresDBHost, data.PostgresDBPort, data.PostgresDBUser, data.PostgresDBPassword, data.PostgresDBName))
+	if err != nil {
+		fmt.Println("unable to connect to the db ", err)
+		return
+	}
+	err = db.Ping()
+	if err != nil {
+		fmt.Println("unable to ping db ", err)
+		return
+	}
+
+	service := domain.NewService(db)
 
 	tmsClient := pb.NewTokenServiceClient(conn)
 
-	handler := handlers.NewHandler(kmsClient, &tmsClient, serviceConfig, redisClient, emailQueue)
+	handler := handlers.NewHandler(kmsClient, tmsClient, serviceConfig, redisClient, service, emailQueue)
 
 	routerGroup := router.Group("/user-service/v1")
-	routerGroup.Handle(http.MethodPost, "/register", handler.Register)
+	routerGroup.Handle(http.MethodPost, "/users", handler.Register)
+	routerGroup.Handle(http.MethodPost, "/login", handler.LoginWithPassword)
+	routerGroup.Handle(http.MethodGet, "/login/consent", handler.ConsentChallenge)
+	routerGroup.Handle(http.MethodGet, "/verify", handler.VerifyEmail)
+	routerGroup.Handle(http.MethodGet, "/login/accept", func(c *gin.Context) {
+		c.AbortWithStatus(http.StatusOK)
+	})
+	routerGroup.Handle(http.MethodPost, "/token/exchange", handler.Exchange)
 
 	if err = router.Run(fmt.Sprintf(":%d", serviceConfig.Port)); err != nil {
 		log.Println(err)

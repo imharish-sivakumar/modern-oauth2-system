@@ -1,0 +1,21 @@
+version: '3.7'
+services:
+
+  build-env:
+    image: golang:1.21-alpine3.19
+    environment:
+      - GO111MODULE=on
+      - GOSUMDB=off
+      - GOPRIVATE=github.com/imharish-sivakumar
+    platform: linux/amd64
+    volumes:
+      - type: volume
+        source: token_management_service_dep
+        target: /go
+      - type: bind
+        source: ../
+        target: /token-management-service
+    working_dir: /token-management-service
+
+volumes:
+  token_management_service_dep:
