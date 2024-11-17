@@ -50,7 +50,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: user-management-service
+          context: ./user-management-service
           file: user-management-service/infrastructure/Dockerfile
           push: true
           tags: harishsivakumar/user-management-service:latest
