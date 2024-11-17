@@ -1,15 +1,30 @@
 services:
   user-service:
-    image: harishsivakumar/user-management-service
+    image: harishsivakumar/user-management-service:latest
     container_name: user-service
+    platform: linux/amd64
+    depends_on:
+      user-migrate:
+        condition: service_completed_successfully
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
   user-migrate:
-    image: harishsivakumar/ums-migrate
+    image: harishsivakumar/ums-migrate:latest
     container_name: ums-migrate
+    platform: linux/amd64
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - SECRET_KEY=/local/cisauth
+  token-service:
+    image: harishsivakumar/token-management-service:latest
+    container_name: token-service
+    platform: linux/amd64
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+

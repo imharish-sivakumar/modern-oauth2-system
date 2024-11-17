@@ -7,7 +7,7 @@ eval $ENV_VARS
 export POSTGRES_DB_PASSWORD=$POSTGRES_DB_PASSWORD
 
 if [ $? -eq 0 ]; then
-    /home/gola/flyway -url=jdbc:postgresql://"${POSTGRES_DB_HOST}":"${POSTGRES_DB_PORT}"/"${POSTGRES_DB_NAME}" -schemas="${POSTGRES_DB_NAME}" -user="${POSTGRES_DB_USER}" -password="${POSTGRES_DB_PASSWORD}" -connectRetries=60 -mixed=true migrate
+    migrate -path /database -database "postgres://${POSTGRES_DB_USER}:${POSTGRES_DB_PASSWORD}@${POSTGRES_DB_HOST}:${POSTGRES_DB_PORT}/${POSTGRES_DB_NAME}?sslmode=disable" -verbose up
 else
     echo "Unable to substitute credentials"
     exit 1
