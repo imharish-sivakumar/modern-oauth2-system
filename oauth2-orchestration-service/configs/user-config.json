@@ -1,0 +1,11 @@
+{
+  "name": "user-management-service",
+  "environment": "local",
+  "port": 8080,
+  "loginPasswordKeyID": "b84a3f58-ea92-4660-88dd-3dd04d729b69",
+  "maxVerificationRetryCount": 5,
+  "verificationLinkExpiry":  60000,
+  "secretKey": "local/cisauth",
+  "refreshTokenExpiry": 720,
+  "tokenManagementServiceHost": "localhost:5052"
+}

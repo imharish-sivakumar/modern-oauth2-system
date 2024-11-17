@@ -22,7 +22,7 @@ create-db:
 	sleep 20
 
 create-hydra:
-	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) up --build -d hydra-migrate hydra admin-hydra-migrate admin-hydra && \
+	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) up --build -d hydra-migrate hydra && \
 	sleep 30
 
 run-hydra: create-hydra
@@ -33,7 +33,10 @@ run-hydra: create-hydra
 run_cache:
 	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) up -d cisauth-cache
 
-start: create_network create-db create_user run_cache run-hydra
+run-services:
+	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) up -d user-service user-migrate token-service
+
+start: create_network create-db create_user run_cache run-hydra run-services
 
 stop:
 	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) down -v && \
