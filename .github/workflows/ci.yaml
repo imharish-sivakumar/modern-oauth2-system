@@ -22,7 +22,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: executable
-          path: user-management-service/bin
+          path: user-management-service/bin/user-management-service
 
   docker:
     needs: [go-build]
