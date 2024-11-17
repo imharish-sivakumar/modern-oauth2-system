@@ -126,7 +126,7 @@ services:
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
   communication-service:
-    image: harishsivakumar/token-management-service:latest
+    image: harishsivakumar/customer-communication-service:latest
     container_name: communication-service
     depends_on:
       - cisauth-cache
