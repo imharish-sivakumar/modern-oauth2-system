@@ -1,7 +1,7 @@
 {
   "name": "token-management-service",
   "environment": "LOCAL",
-  "secretKey": "local/cisauth",
+  "secretKey": "dev/cisauth",
   "cisAuth": {
     "secretKeys": {
       "redisHost": "REDIS_HOST",

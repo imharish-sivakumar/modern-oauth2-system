@@ -5,7 +5,7 @@
   "loginPasswordKeyID": "b84a3f58-ea92-4660-88dd-3dd04d729b69",
   "maxVerificationRetryCount": 5,
   "verificationLinkExpiry":  60000,
-  "secretKey": "local/cisauth",
+  "secretKey": "dev/cisauth",
   "refreshTokenExpiry": 720,
-  "tokenManagementServiceHost": "localhost:5052"
+  "tokenManagementServiceHost": "token-service:5052"
 }
