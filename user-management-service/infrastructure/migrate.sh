@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
 SECRET_JSON=$(aws secretsmanager get-secret-value --secret-id $SECRET_KEY --query 'SecretString' --output text)
 ENV_VARS=$(echo $SECRET_JSON | jq -r 'to_entries[] | "\(.key)=\(.value)"')
+echo $ENV_VARS
 
 # Set the environment variables
 eval $ENV_VARS
