@@ -2,11 +2,6 @@ module token-management-service
 
 go 1.21
 
-replace (
-	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto v0.0.0 => ./../cisauth-proto
-	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0 => ./../service-utils
-)
-
 require (
 	github.com/aws/aws-sdk-go-v2 v1.32.4
 	github.com/aws/aws-sdk-go-v2/config v1.28.3
@@ -14,8 +9,8 @@ require (
 	github.com/go-playground/validator/v10 v10.22.0
 	github.com/golang-jwt/jwt/v5 v5.2.1
 	github.com/google/uuid v1.6.0
-	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto v0.0.0
-	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0
+	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto v0.0.0-20241117055103-edb111defbee
+	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0-20241117054653-4a419b054504
 	github.com/joho/godotenv v1.5.1
 	github.com/redis/go-redis/v9 v9.5.3
 	google.golang.org/grpc v1.67.1
