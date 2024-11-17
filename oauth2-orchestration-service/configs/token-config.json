@@ -15,19 +15,19 @@
     "clients": {
       "a3c55263-1e63-4103-86d2-64ea63ddf17c": {
         "secret": "secretKeys:uiWebClientSecret",
-        "redirectURI": "http://localhost:3000/user-service/v1/login/accept"
+        "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       },
       "4bc61ae4-94b3-478f-a3eb-b5c3678fe899": {
         "secret": "secretKeys:forgotPasswordClientSecret",
-        "redirectURI": "http://localhost:3000/user-service/v1/login/accept"
+        "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       },
       "376da922-f912-45eb-ab49-4a791257cac2": {
         "secret": "secretKeys:verifyEmailClientSecret",
-        "redirectURI": "http://localhost:3000/user-service/v1/login/accept"
+        "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       }
     },
-    "oAuthServerAdminBaseURL": "http://localhost:4445/admin",
-    "oAuthServerPublicBaseURL": "http://localhost:4444",
+    "oAuthServerAdminBaseURL": "http://hydra:4445/admin",
+    "oAuthServerPublicBaseURL": "http://hydra:4444",
     "credentialsResetSettings": {
       "requestCount": 5,
       "requestTTL": 15

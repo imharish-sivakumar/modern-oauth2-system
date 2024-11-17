@@ -4,12 +4,12 @@ serve:
 
 urls:
   self:
-    issuer: https://cisauth.org
-    public: https://cisauth.org
+    issuer: https://www.cisauth.org
+    public: https://www.cisauth.org
 
-  login: https://cisauth.org/api/user-service/v1/login/accept
-  consent: https://cisauth.org/api/user-service/v1/login/consent
-  logout: https://cisauth.org/api/user-service/v1/users/logout
+  login: https://www.cisauth.org/api/user-service/v1/login/accept
+  consent: https://www.cisauth.org/api/user-service/v1/login/consent
+  logout: https://www.cisauth.org/api/user-service/v1/users/logout
   post_logout_redirect: https://cisauth.org/login
 
 secrets:
