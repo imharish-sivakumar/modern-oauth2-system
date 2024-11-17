@@ -1,4 +1,4 @@
-name: modern-oauth2-system
+name: token-management-service
 on: [ push ]
 permissions:
   contents: read
@@ -12,17 +12,17 @@ jobs:
         env:
           CI_COMMIT_SHA: ${{ github.sha }}
           CI_COMMIT_TAG: ${{ github.ref }}
-          EXEC_NAME: user-management-service
+          EXEC_NAME: token-management-service
           GITHUB_USERNAME: ${{ secrets.SCM_USERNAME }}
           GITHUB_ACCESS_TOKEN: ${{ secrets.SCM_TOKEN }}
         run: |
-          cd user-management-service
+          cd token-management-service
           make build
       - name: Step 3 - Use the Upload Artifact GitHub Action
         uses: actions/upload-artifact@v3
         with:
           name: executable
-          path: user-management-service/bin/user-management-service
+          path: token-management-service/bin/token-management-service
 
   docker:
     needs: [go-build]
@@ -40,7 +40,7 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: executable
-          path: ./user-management-service/bin
+          path: ./token-management-service/bin
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -49,34 +49,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./user-management-service
-          file: user-management-service/infrastructure/Dockerfile
+          context: ./token-management-service
+          file: token-management-service/infrastructure/Dockerfile
           push: true
-          tags: harishsivakumar/user-management-service:latest
-
-  docker-migrate:
-    needs: [go-build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-        with:
-          driver: docker
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v4
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push
-        uses: docker/build-push-action@v5
-        with:
-          context: user-management-service
-          file: user-management-service/infrastructure/Migrate.Dockerfile
-          push: true
-          build-args: |
-            ARCH=amd64
-          tags: harishsivakumar/ums-migrate:latest
+          tags: harishsivakumar/token-management-service:latest
