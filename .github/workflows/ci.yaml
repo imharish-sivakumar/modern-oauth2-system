@@ -77,4 +77,6 @@ jobs:
           context: user-management-service
           file: user-management-service/infrastructure/Migrate.Dockerfile
           push: true
+          build-args: |
+            ARCH=amd64
           tags: harishsivakumar/ums-migrate:latest

@@ -1,10 +1,7 @@
 FROM alpine:3.16
 
-ARG GITHUB_TOKEN
 ARG ARCH
 RUN apk add git
-
-ENV GITHUB_TOKEN=$GITHUB_TOKEN
 
 RUN apk add --no-cache curl
 RUN curl -L https://github.com/golang-migrate/migrate/releases/download/v4.17.1/migrate.linux-${ARCH}.tar.gz | tar xz
