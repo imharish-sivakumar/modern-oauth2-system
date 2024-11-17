@@ -13,15 +13,15 @@
     },
     "grpcPort": 5052,
     "clients": {
-      "a3c55263-1e63-4103-86d2-64ea63ddf17c": {
+      "fc0d0c02-f3e4-4aea-8bd9-b3d48b68fbd6": {
         "secret": "secretKeys:uiWebClientSecret",
         "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       },
-      "4bc61ae4-94b3-478f-a3eb-b5c3678fe899": {
+      "dac855dd-f896-49e7-8ac1-0a5f7466d7fe": {
         "secret": "secretKeys:forgotPasswordClientSecret",
         "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       },
-      "376da922-f912-45eb-ab49-4a791257cac2": {
+      "5757f786-ac7a-4b66-a170-1af4bdfd2b4b": {
         "secret": "secretKeys:verifyEmailClientSecret",
         "redirectURI": "https://www.cisauth.org/api/user-service/v1/login/accept"
       }
