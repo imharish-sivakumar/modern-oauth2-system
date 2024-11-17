@@ -36,6 +36,9 @@ run_cache:
 run-services:
 	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) up -d user-service user-migrate token-service communication-service
 
+stop-services:
+	docker compose -f docker-compose.db.yaml --project-name $(PROJECT) down user-service user-migrate token-service communication-service
+
 start: create_network create-db create_user run_cache run-hydra run-services
 
 stop:
