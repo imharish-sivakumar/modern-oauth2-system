@@ -4,7 +4,7 @@ PROJECT := cisauth
 ifeq ($(findstring local,$(ENVIRONMENT)),local)
 UMS_CALLBACK := http://localhost:3000/user-service/v1/login/accept
 else
-UMS_CALLBACK := https://cisauth.org/user-service/v1/login/accept
+UMS_CALLBACK := https://cisauth.org/api/user-service/v1/login/accept
 endif
 
 create_network:
