@@ -127,13 +127,11 @@ services:
 
   communication-service:
     image: harishsivakumar/token-management-service:latest
-    container_name: token-service
+    container_name: communication-service
     depends_on:
       - cisauth-cache
     networks:
       - cisauth-network
-    ports:
-      - "5052:5052"
     volumes:
       - ./configs/communication-config.json:/config/config.json
     platform: linux/amd64
