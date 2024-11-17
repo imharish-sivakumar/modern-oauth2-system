@@ -1,0 +1,55 @@
+name: customer-communication-service
+on: [ push ]
+permissions:
+  contents: read
+jobs:
+  go-build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v3
+      - name: build
+        env:
+          CI_COMMIT_SHA: ${{ github.sha }}
+          CI_COMMIT_TAG: ${{ github.ref }}
+          EXEC_NAME: customer-communication-service
+          GITHUB_USERNAME: ${{ secrets.SCM_USERNAME }}
+          GITHUB_ACCESS_TOKEN: ${{ secrets.SCM_TOKEN }}
+        run: |
+          cd customer-communication-service
+          make build
+      - name: Step 3 - Use the Upload Artifact GitHub Action
+        uses: actions/upload-artifact@v3
+        with:
+          name: executable
+          path: customer-communication-service/bin/customer-communication-service
+
+  docker:
+    needs: [go-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          driver: docker
+      - name: Check out code into the Go module directory
+        uses: actions/checkout@v4
+      - name: Download a single artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: executable
+          path: ./customer-communication-service/bin
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: ./customer-communication-service
+          file: customer-communication-service/infrastructure/Dockerfile
+          push: true
+          tags: harishsivakumar/customer-communication-service:latest

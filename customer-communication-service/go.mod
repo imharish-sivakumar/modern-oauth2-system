@@ -1,19 +1,14 @@
 module customer-communication-service
 
-go 1.22.2
+go 1.21
 
 require (
 	github.com/adjust/rmq/v5 v5.2.0
 	github.com/aws/aws-sdk-go-v2 v1.32.3
 	github.com/aws/aws-sdk-go-v2/config v1.28.1
 	github.com/aws/aws-sdk-go-v2/service/secretsmanager v1.34.3
-	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0
+	github.com/imharish-sivakumar/modern-oauth2-system/service-utils v0.0.0-20241117074823-e59fd638a9f7
 	gopkg.in/gomail.v2 v2.0.0-20160411212932-81ebce5c23df
-)
-
-replace (
-	github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto => ./../cisauth-proto
-	github.com/imharish-sivakumar/modern-oauth2-system/service-utils => ./../service-utils
 )
 
 require (

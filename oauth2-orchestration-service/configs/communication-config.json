@@ -1,6 +1,6 @@
 {
   "name": "customer-communication-service",
-  "environment": "local",
-  "secretKey": "local/cisauth",
+  "environment": "DEV",
+  "secretKey": "dev/cisauth",
   "fromEmail": "support@cisauth.org"
 }

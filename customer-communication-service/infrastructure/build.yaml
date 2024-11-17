@@ -1,0 +1,19 @@
+services:
+  build-env:
+    image: golang:1.21-alpine3.19
+    environment:
+      - GO111MODULE=on
+      - GOSUMDB=off
+      - GOPRIVATE=github.com/imharish-sivakumar
+    platform: linux/amd64
+    volumes:
+      - type: volume
+        source: customer_communication_service_dep
+        target: /go
+      - type: bind
+        source: ../
+        target: /customer-communication-service
+    working_dir: /customer-communication-service
+
+volumes:
+  customer_communication_service_dep:

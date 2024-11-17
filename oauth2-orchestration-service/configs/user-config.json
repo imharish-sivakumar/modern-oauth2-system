@@ -1,6 +1,6 @@
 {
   "name": "user-management-service",
-  "environment": "local",
+  "environment": "DEV",
   "port": 8080,
   "loginPasswordKeyID": "b84a3f58-ea92-4660-88dd-3dd04d729b69",
   "maxVerificationRetryCount": 5,

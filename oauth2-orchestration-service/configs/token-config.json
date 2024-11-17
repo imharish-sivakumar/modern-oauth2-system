@@ -1,6 +1,6 @@
 {
   "name": "token-management-service",
-  "environment": "LOCAL",
+  "environment": "DEV",
   "secretKey": "dev/cisauth",
   "cisAuth": {
     "secretKeys": {

@@ -98,6 +98,8 @@ services:
     image: harishsivakumar/ums-migrate:latest
     container_name: ums-migrate
     platform: linux/amd64
+    depends_on:
+      - cisauth-db
     networks:
       - cisauth-network
     environment:
@@ -109,12 +111,31 @@ services:
   token-service:
     image: harishsivakumar/token-management-service:latest
     container_name: token-service
+    depends_on:
+      - cisauth-cache
     networks:
       - cisauth-network
     ports:
       - "5052:5052"
     volumes:
       - ./configs/token-config.json:/config/serviceconfig.json
+    platform: linux/amd64
+    environment:
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+
+  communication-service:
+    image: harishsivakumar/token-management-service:latest
+    container_name: token-service
+    depends_on:
+      - cisauth-cache
+    networks:
+      - cisauth-network
+    ports:
+      - "5052:5052"
+    volumes:
+      - ./configs/communication-config.json:/config/config.json
     platform: linux/amd64
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
