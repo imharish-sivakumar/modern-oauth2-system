@@ -10,6 +10,7 @@ RUN npm install
 
 # Copy the rest of the application files
 COPY . .
+COPY .env .env
 
 # Build the React application
 RUN npm run build
