@@ -1,4 +1,4 @@
-# Use official Node.js image as the base image
+# Use official Node.js image as the base image for building the app
 FROM node:18 AS build
 
 # Set the working directory
@@ -15,14 +15,20 @@ COPY .env .env
 # Build the React application
 RUN npm run build
 
-# Use Nginx to serve the React build files
-FROM nginx:alpine
+# Use Node.js to serve the React build files with `serve`
+FROM node:18-alpine
 
-# Copy the built React files from the previous stage
-COPY --from=build /app/build /usr/share/nginx/html
+# Install `serve` globally
+RUN npm install -g serve
 
-# Expose port 80
+# Set the working directory
+WORKDIR /app
+
+# Copy only the built React app from the previous stage
+COPY --from=build /app/build /app/build
+
+# Expose port 5000 (or any port you prefer)
 EXPOSE 80
 
-# Start Nginx
-CMD ["nginx", "-g", "daemon off;"]
+# Start the server using `serve`
+CMD ["serve", "-s", "build", "-l", "80"]
