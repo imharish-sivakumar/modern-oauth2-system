@@ -1,19 +1,57 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import './Login.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import {broadCastFetchLoginChallenge, generateRandomString, handleConsentAndFetchToken} from "../helper/utils";
+import LoggedInContext from '../context-providers/loggedin-provider/LoggedInContext';
+import loginService from "../services/loginService";
+import encrypt from "../helper/encrypt";
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [forgotEmail, setForgotEmail] = useState('');
+  const { login } = useContext(LoggedInContext);
 
-  const handleSubmit = (event) => {
+  const handleSuccessfulLogin = async (responseData, loginVerifier) => {
+    // eslint-disable-next-line no-unused-vars
+    let tokenData;
+    try {
+      tokenData = await handleConsentAndFetchToken(responseData.data.redirect_to, loginVerifier);
+    } catch {
+      // eslint-disable-next-line no-console
+      console.log('something went wrong');
+      return;
+    }
+    // eslint-disable-next-line no-console
+    console.log('successfully logged in', tokenData);
+    login();
+  };
+
+  const handleFailureLogin = (err) => {
+    if (err?.response?.data?.errorCode === 'ERR_IDP_INVALID_CREDENTIALS') {
+      console.log('Invalid email or password');
+    }
+  };
+
+  const handleSubmit = async (event) => {
     event.preventDefault();
     // Handle login logic
     console.log({ email, password });
+    const code = generateRandomString();
+    let loginChallengeFromResponse = '';
+    try {
+      loginChallengeFromResponse = await broadCastFetchLoginChallenge(code);
+    } catch(err) {
+      console.log(err);
+      return;
+    }
+    loginService
+        .loginUser(email, encrypt(password), loginChallengeFromResponse)
+        .then((responseData) => handleSuccessfulLogin(responseData, code))
+        .catch(handleFailureLogin);
   };
 
   const handleForgotPasswordSubmit = () => {
