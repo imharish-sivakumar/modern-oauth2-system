@@ -91,7 +91,7 @@ func (h *Handler) Register(c *gin.Context) {
 	for _, decodedText := range decoded {
 		output, err := h.kmsClient.Decrypt(ctx, &kms.DecryptInput{
 			CiphertextBlob:      decodedText,
-			EncryptionAlgorithm: types.EncryptionAlgorithmSpecRsaesOaepSha1,
+			EncryptionAlgorithm: types.EncryptionAlgorithmSpecRsaesOaepSha256,
 			EncryptionContext:   map[string]string{},
 			KeyId:               aws.String(h.serviceConfig.LoginPasswordKeyID),
 		})
