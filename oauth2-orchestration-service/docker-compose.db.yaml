@@ -134,6 +134,7 @@ services:
       - cisauth-network
     volumes:
       - ./configs/communication-config.json:/config/config.json
+      - ./templates:/templates
     platform: linux/amd64
     environment:
       - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
