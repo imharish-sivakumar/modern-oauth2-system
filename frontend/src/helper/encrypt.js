@@ -2,7 +2,7 @@ import forge from 'node-forge';
 
 const encrypt = (valueToEncrypt) => {
     // Import the public key (in PEM format)
-    const publicKeyPem = atob(process.env.REACT_APP_PUBLIC_KEY);
+    const publicKeyPem = atob(process.env.REACT_APP_PASSWORD_ENC_PUBLIC_KEY);
     const publicKey = forge.pki.publicKeyFromPem(publicKeyPem);
 
     // Encrypt the value with RSA-OAEP and specify SHA-256 as the hash algorithm
