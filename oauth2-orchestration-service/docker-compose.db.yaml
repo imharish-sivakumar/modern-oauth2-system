@@ -140,6 +140,24 @@ services:
       - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION}
       - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 
+  frontend:
+    image: harishsivakumar/cisauth-frontend:latest
+    container_name: frontend
+    ports:
+      - "80:80"
+    networks:
+      - cisauth-network
+    depends_on:
+      - user-service
+      - token-service
+      - communication-service
+    environment:
+      - REACT_APP_OAUTH_REDIRECT_URI=https://www.cisauth.org/api/user-service/v1/login/accept
+      - REACT_APP_PASSWORD_ENC_PUBLIC_KEY=LS0tLS1CRUdJTiBQVUJMSUMgS0VZLS0tLS0KTUlJQ0lqQU5CZ2txaGtpRzl3MEJBUUVGQUFPQ0FnOEFNSUlDQ2dLQ0FnRUFzcy9rQXJCWjNGTisyUVZ1bnUvSApobTRFNFMybnBDTG1UaGUvUnoyQVY5NFR5VmdFUUhXWE0vdFBuYXFQNCsveUR2RlhJNlBpbDNheFgvT2lyYlFnCm9Gam1xZ2w2Zm5NckJ2SlNqQXZ6aDlMQ081WU1yLzh1Z1hLTG55RlZaUi9aeE9SUFpPamlua3Y4UmFMcXE5bzIKdHBwNHN6R3FZaUFxQmpEb3BLVVEyeWtoZk9RTllFaXVvV09wMW1lQVExd0N0TXZTcFJ1U1k0MU41MG1oOFovcQpmbU9MTFBPQzBDYWVHZzBtdzdnUmhYd2ltU1Y0WjNtaGV0bnZtNVJCWHIxaEJYVXFDRXhRQmNkaHBLQnlIT3dTCml2YzVkcC9jRmtac3UwdUJvQXNIUHBraThxNUN2bUszMk1vZkNnWGxFQ01kMVI0OUhJTjBsbUtwN1VwVlRoQnoKWUp3T2d0eEthTk1EbHp4KzRKTWlxakxKOUFNT2V3N2NoODVjWGRvUGdRR0dmMmNOVjN4cEFWMEpDSmNTd2FIYQpGNUpSUW5md1VzdUdzalRoV1lvMVVrUVJxS1hXUVlGRmpYNFkzN29pNnJ5TEtTQWdOWUYyVnUzTGd5QWNoN2s4CmZJSWhqa2V1SWxtUFRYSGRXalR6T1ZtWEtseUx6Mmx2Z0MyWTg3NzVGZjlPZno5YndvdjlMK2VPSytTRSsweVAKeHR2TStGay9nMkhXT3UyUjk3Z1FuSUlPRDc3TUJVaXV4WDNodkh3VjZhWG01ZVdyNGtiVUVOWGRlY2cvS3VYZQozK0UzalNVaktFVkY2Wis0bG42R1djbzVrdDRtbFRKSS9CTjlWdW1Hc0tGd2JwZE1TRWprdUc3bU1qWHROWjVuCk5oR1A0bzN6K29CZ01URFBoWHViMmdVQ0F3RUFBUT09Ci0tLS0tRU5EIFBVQkxJQyBLRVktLS0tLQ==
+      - REACT_APP_OAUTH_CLIENT_ID=a3c55263-1e63-4103-86d2-64ea63ddf17c
+      - REACT_APP_OAUTH_URL=https://www.cisauth.org/
+    platform: linux/amd64
+
 networks:
   cisauth-network:
     external: true
