@@ -4,7 +4,6 @@ permissions:
   contents: read
 jobs:
   docker:
-    needs: [go-build]
     runs-on: ubuntu-latest
     steps:
       - name: Set up QEMU
