@@ -3,6 +3,8 @@ import { Modal, Button } from 'react-bootstrap';
 import './Signup.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope, faLock } from '@fortawesome/free-solid-svg-icons';
+import loginService from "../services/loginService";
+import encrypt from "../helper/encrypt";
 
 const Signup = () => {
   const [email, setEmail] = useState('');
@@ -13,11 +15,21 @@ const Signup = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // Mock API call for signup and email verification
-    setTimeout(() => {
-      setShowVerificationModal(true); // Show verification modal when signup is successful
-    }, 1000);
-  };
+    try {
+      const encryptedPassword = encrypt(password); 
+      const response = await loginService.registerUser(email, encryptedPassword); 
+  
+      if (response.status === 200) {
+        setShowVerificationModal(true); 
+            } else {
+        console.error('Registration failed:', response.data);
+        alert('Registration failed. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error during registration:', error);
+      alert('An error occurred during registration. Please try again.');
+    };
+
 
   const handleForgotPasswordSubmit = () => {
     // Handle forgot password logic

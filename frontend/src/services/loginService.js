@@ -11,6 +11,22 @@ export default {
         return axios.post(`/api/user-service/v1/login`, requestBody);
     },
 
+    registerUser: (email, encryptedPassword) => {
+        const requestBody = {
+            email,
+            password: encryptedPassword,
+            confirmPassword: encryptedPassword,
+        };
+
+        return axios.post(`/api/user-service/v1/register`, requestBody);
+    },
+
+    verifyAccount: (verificationCode) => {
+        const url = `/api/user-service/v1/verify?code=${verificationCode}`;
+        return axios.get(url);
+    },
+
+
     loginConsentInitiate: (url) => {
         return axios.get(url);
     },
@@ -50,3 +66,4 @@ export default {
         return axios.get(url.href);
     },
 };
+

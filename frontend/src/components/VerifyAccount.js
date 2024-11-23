@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import './VerifyAccount.css'; // Create a CSS file for custom styling
+import loginService from "../services/loginService";
+import encrypt from "../helper/encrypt";
 
 const VerifyAccount = () => {
   const [message, setMessage] = useState('');
@@ -13,15 +15,27 @@ const VerifyAccount = () => {
     const searchParams = new URLSearchParams(location.search);
     const token = searchParams.get('token');
 
-    // Mock verification process with loading state
-    setTimeout(() => {
-      if (token === 'mock-valid-token') {
-        setMessage('Your account has been successfully verified!');
-      } else {
-        setMessage('The verification link is invalid or has expired. Please try again.');
-      }
+    if (token) {
+      // Call the verifyAccount API
+      loginService.verifyAccount(token)
+        .then((response) => {
+          if (response.status === 200) {
+            setMessage('Your account has been successfully verified!');
+          } else {
+            setMessage('The verification link is invalid or has expired. Please try again.');
+          }
+        })
+        .catch((error) => {
+          console.error('Error verifying account:', error);
+          setMessage('An error occurred during verification. Please try again.');
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setMessage('Invalid verification link.');
       setLoading(false);
-    }, 1500); // Simulate a network delay
+    }
   }, [location]);
 
   return (
