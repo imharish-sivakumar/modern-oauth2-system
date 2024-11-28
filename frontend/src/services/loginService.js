@@ -18,7 +18,7 @@ export default {
             confirmPassword: encryptedPassword,
         };
 
-        return axios.post(`/api/user-service/v1/register`, requestBody);
+        return axios.post(`/api/user-service/v1/users`, requestBody);
     },
 
     verifyAccount: (verificationCode) => {
