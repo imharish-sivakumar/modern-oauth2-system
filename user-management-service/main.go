@@ -20,6 +20,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/service/secretsmanager"
 	"github.com/gin-gonic/gin"
 	"github.com/imharish-sivakumar/modern-oauth2-system/cisauth-proto/pb"
+	"github.com/imharish-sivakumar/modern-oauth2-system/service-utils/middlewares/authentication"
 	"github.com/redis/go-redis/v9"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
@@ -106,16 +107,23 @@ func main() {
 
 	handler := handlers.NewHandler(kmsClient, tmsClient, serviceConfig, redisClient, service, emailQueue)
 
+	tokenMiddleware, err := authentication.NewTokenMiddleware("", tmsClient)
+	if err != nil {
+		fmt.Println("unable to create token middleware", err)
+		return
+	}
+
 	routerGroup := router.Group("/user-service/v1")
 	routerGroup.Handle(http.MethodPost, "/users", handler.Register)
 	routerGroup.Handle(http.MethodPost, "/login", handler.LoginWithPassword)
 	routerGroup.Handle(http.MethodGet, "/login/consent", handler.ConsentChallenge)
 	routerGroup.Handle(http.MethodGet, "/verify", handler.VerifyEmail)
-	routerGroup.Handle(http.MethodGet, "/user", handler.User)
 	routerGroup.Handle(http.MethodGet, "/login/accept", func(c *gin.Context) {
 		c.AbortWithStatus(http.StatusOK)
 	})
 	routerGroup.Handle(http.MethodPost, "/token/exchange", handler.Exchange)
+	routerGroup.Use(tokenMiddleware.DoAuthenticate)
+	routerGroup.Handle(http.MethodGet, "/user", handler.User)
 
 	if err = router.Run(fmt.Sprintf(":%d", serviceConfig.Port)); err != nil {
 		log.Println(err)
