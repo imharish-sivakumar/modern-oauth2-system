@@ -14,6 +14,7 @@ const LoggedInProvider = ({ children }) => {
   useEffect(() => {
     const acxsToken = Cookies.get('access_token');
     const session = Cookies.get('session');
+    console.log("access token and session ", acxsToken, session);
     if (acxsToken && session) {
       setAccessToken(acxsToken);
       setSessionID(session);
