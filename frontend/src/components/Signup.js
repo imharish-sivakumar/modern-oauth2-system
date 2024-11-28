@@ -13,22 +13,23 @@ const Signup = () => {
   const [forgotEmail, setForgotEmail] = useState('');
   const [showVerificationModal, setShowVerificationModal] = useState(false);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const encryptedPassword = encrypt(password); 
-      const response = await loginService.registerUser(email, encryptedPassword); 
-  
+      const encryptedPassword = encrypt(password);
+      const response = await loginService.registerUser(email, encryptedPassword);
+
       if (response.status === 200) {
-        setShowVerificationModal(true); 
-            } else {
+        setShowVerificationModal(true);
+      } else {
         console.error('Registration failed:', response.data);
         alert('Registration failed. Please try again.');
       }
     } catch (error) {
       console.error('Error during registration:', error);
       alert('An error occurred during registration. Please try again.');
-    };
+    }
+  };
 
 
   const handleForgotPasswordSubmit = () => {
