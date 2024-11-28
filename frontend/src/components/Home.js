@@ -10,21 +10,19 @@ const Home = () => {
   const {isLoggedIn} = useContext(LoggedInContext)
 
   useEffect(() => {
+    console.log("isLoggedIn", isLoggedIn);
     if (!isLoggedIn) {
-      console.log("navigating to login", isLoggedIn)
       navigate("/login");
+    } else {
+      axios.get("/api/user-service/v1/user").then(({data}) => {
+        console.log(data);
+        setUser(data);
+      }).catch((err) => {
+        console.log(err)
+        // navigate("/login");
+      });
     }
   }, [isLoggedIn]);
-
-  useEffect(() => {
-    axios.get("/api/user-service/v1/user").then(({data}) => {
-      console.log(data);
-      setUser(data);
-    }).catch((err) => {
-      console.log(err)
-      // navigate("/login");
-    });
-  }, []);
 
   return (
     <div className="auth-container">
