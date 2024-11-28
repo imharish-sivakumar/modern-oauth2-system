@@ -203,6 +203,12 @@ incrementAndSend:
 	})
 }
 
+func (h *Handler) User(c *gin.Context) {
+	userProfile := c.MustGet(constants.UserContext)
+
+	c.JSON(http.StatusOK, userProfile)
+}
+
 func (handler *Handler) VerifyEmail(c *gin.Context) {
 	var verificationRequest model.VerifyEmail
 	if err := c.ShouldBindQuery(&verificationRequest); err != nil {

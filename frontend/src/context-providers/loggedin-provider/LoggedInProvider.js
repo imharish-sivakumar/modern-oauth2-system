@@ -22,6 +22,13 @@ const LoggedInProvider = ({ children }) => {
     setIsLoginDone(true);
   }, []);
 
+  useEffect(() => {
+    if (isLoggedIn) {
+      setAccessToken(Cookies.get('access_token'));
+      setSessionID(Cookies.get('session'));
+    }
+  }, [isLoggedIn]);
+
   const goToLogout = () => {
     navigate("/logout");
   };

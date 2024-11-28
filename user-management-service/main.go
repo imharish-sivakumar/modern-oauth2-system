@@ -111,6 +111,7 @@ func main() {
 	routerGroup.Handle(http.MethodPost, "/login", handler.LoginWithPassword)
 	routerGroup.Handle(http.MethodGet, "/login/consent", handler.ConsentChallenge)
 	routerGroup.Handle(http.MethodGet, "/verify", handler.VerifyEmail)
+	routerGroup.Handle(http.MethodGet, "/user", handler.User)
 	routerGroup.Handle(http.MethodGet, "/login/accept", func(c *gin.Context) {
 		c.AbortWithStatus(http.StatusOK)
 	})
