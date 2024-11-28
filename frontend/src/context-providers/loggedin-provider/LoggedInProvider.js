@@ -25,6 +25,9 @@ const LoggedInProvider = ({ children }) => {
 
   useEffect(() => {
     console.log("logged in changed", isLoggedIn);
+    if (isLoggedIn) {
+      navigate("/");
+    }
   }, [isLoggedIn]);
 
   const goToLogout = () => {
