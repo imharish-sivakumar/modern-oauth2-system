@@ -24,10 +24,7 @@ const LoggedInProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn) {
-      setAccessToken(Cookies.get('access_token'));
-      setSessionID(Cookies.get('session'));
-    }
+    console.log("logged in changed", isLoggedIn);
   }, [isLoggedIn]);
 
   const goToLogout = () => {
