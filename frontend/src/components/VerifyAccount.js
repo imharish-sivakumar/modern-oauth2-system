@@ -19,7 +19,7 @@ const VerifyAccount = () => {
       // Call the verifyAccount API
       loginService.verifyAccount(token)
         .then((response) => {
-          if (response.status === 200) {
+          if (response.status === 201) {
             setMessage('Your account has been successfully verified!');
           } else {
             setMessage('The verification link is invalid or has expired. Please try again.');
